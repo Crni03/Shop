@@ -123,5 +123,16 @@ namespace Shop.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult Clear()
+        {
+
+            Session["BasketItems"] = null;
+            Session["DiscountsLeft"] = null;
+            Session["Products"] = null;
+            TempData["Message"] = "Thank you for your purchase!";
+
+            return RedirectToAction("Index");
+        }
     }
 }
