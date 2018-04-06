@@ -43,6 +43,8 @@ namespace Shop.Models
         public decimal GetTotalDiscount()
         {
             decimal totalDiscount = 0;
+            decimal tempTotalPrice = TotalPrice;
+            decimal tempTotalDiscount = 0;
 
             if (UsedDiscounts != null)
             {
@@ -57,21 +59,24 @@ namespace Shop.Models
                         }
                         else
                         {
-                            subtractValue = item.Amount;
+                            totalDiscount = item.Amount;
                         }
+                        subtractValue = 0;
                         break;
                     }
                     else
                     {
                         if (item.Percent)
                         {
-                            totalDiscount += TotalPrice * item.Amount / 100;
+                            tempTotalDiscount = tempTotalPrice * item.Amount / 100;
+                            tempTotalPrice = tempTotalPrice - tempTotalDiscount;
+                            totalDiscount += tempTotalDiscount;
                         }
                         else
                         {
                             subtractValue += item.Amount;
                         }
-                    }
+                    }                 
                 }
                 totalDiscount += subtractValue;
             }
@@ -83,6 +88,51 @@ namespace Shop.Models
         public decimal GetPrice()
         {
             return TotalPrice - TotalDiscount;
+        }
+
+
+        public decimal GetPrice2()
+        {
+
+            decimal totalPrice = 0;
+            decimal totalDiscounts = 0;
+
+            foreach (BasketItem item in BasketItems)
+            {
+                totalPrice += item.GetTotalPrice();
+            }
+            if (UsedDiscounts != null)
+            {
+                decimal subtractValue = 0;
+                foreach (Discount item in UsedDiscounts)
+                {
+                    if (!item.CanConjunc)
+                    {
+                        if (item.Percent)
+                        {
+                            totalDiscounts = totalPrice * item.Amount / 100;
+                        }
+                        else
+                        {
+                            subtractValue = item.Amount;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        if (item.Percent)
+                        {
+                            totalDiscounts += totalPrice * item.Amount / 100;
+                        }
+                        else
+                        {
+                            subtractValue += item.Amount;
+                        }
+                    }
+                }
+                totalDiscounts += subtractValue;
+            }
+            return totalPrice - totalDiscounts;
         }
     }
 }
