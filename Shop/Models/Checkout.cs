@@ -10,7 +10,7 @@ namespace Shop.Models
     {
         public List<BasketItem> BasketItems { get; set; }
         public List<Discount> Discounts { get; set; }
-        [Display(Name ="Card Number")]
+        [Display(Name = "Card Number")]
         public string CardNumber { get; set; }
         [Display(Name = "Shipping adress")]
         public string Adress { get; set; }
@@ -22,16 +22,29 @@ namespace Shop.Models
         public virtual Discount Discount { get; set; }
 
 
-        public decimal GetTotalPrice() {
 
+        private decimal TotalPrice { get; set; }
+        private decimal TotalDiscount { get; set; }
+
+
+        public decimal GetTotalPrice()
+        {
             decimal totalPrice = 0;
-            decimal totalDiscounts = 0;
 
             foreach (BasketItem item in BasketItems)
             {
                 totalPrice += item.GetTotalPrice();
             }
-            if (UsedDiscounts != null)
+            totalPrice = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero);
+            TotalPrice = totalPrice;
+            return totalPrice;
+        }
+
+        public decimal GetTotalDiscount()
+        {
+            decimal totalDiscount = 0;
+
+            if (UsedDiscount != null)
             {
                 decimal subtractValue = 0;
                 foreach (Discount item in UsedDiscounts)
@@ -40,7 +53,7 @@ namespace Shop.Models
                     {
                         if (item.Percent)
                         {
-                            totalDiscounts = totalPrice * item.Amount / 100;
+                            totalDiscount = TotalPrice * item.Amount / 100;
                         }
                         else
                         {
@@ -52,7 +65,7 @@ namespace Shop.Models
                     {
                         if (item.Percent)
                         {
-                            totalDiscounts += totalPrice * item.Amount / 100;
+                            totalDiscount += TotalPrice * item.Amount / 100;
                         }
                         else
                         {
@@ -60,9 +73,16 @@ namespace Shop.Models
                         }
                     }
                 }
-                totalDiscounts += subtractValue;    
+                totalDiscount += subtractValue;
             }
-            return totalPrice - totalDiscounts;
-        } 
+            totalDiscount = decimal.Round(totalDiscount, 2, MidpointRounding.AwayFromZero);
+            TotalDiscount = totalDiscount;
+            return totalDiscount;
+        }
+
+        public decimal GetPrice()
+        {
+            return TotalPrice - TotalDiscount;
+        }
     }
 }

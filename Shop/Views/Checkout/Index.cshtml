@@ -139,11 +139,23 @@
         <th>
             Total Price
         </th>
+        <th>
+            Total Discount
+        </th>
+        <th>
+            Price
+        </th>
 
     </tr>
     <tr>
         <td>
             @Model.GetTotalPrice()
+        </td>
+        <td>
+            @Model.GetTotalDiscount()
+        </td>
+        <td>
+            @Model.GetPrice()
         </td>
 
     </tr>

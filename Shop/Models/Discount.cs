@@ -16,8 +16,10 @@ namespace Shop.Models
         [Required]
         public decimal Amount { get; set; }
         [Required]
+        [Display(Name = "Percent?")]
         public bool Percent { get; set; }
         [Required]
+        [Display(Name = "Can conjunc?")]
         public bool CanConjunc { get; set; }
 
     }
