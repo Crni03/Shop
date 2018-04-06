@@ -35,16 +35,31 @@
         <td>
             @if (item.QuantityForPrice > 0 && item.QuantityPrice > 0)
             {
-               @(item.QuantityForPrice + " for " + item.QuantityPrice);
+                @(item.QuantityForPrice + " for " + item.QuantityPrice);
             }
         </td>
         <td>
             @Html.ActionLink("Edit", "GetById", new { id = item.IdProduct, view = "Edit" }) |
             @Html.ActionLink("Details", "GetById", new { id = item.IdProduct, view = "Details" }) |
-            @Html.ActionLink("Delete", "GetById", new { id = item.IdProduct, view = "Delete" })
+            @Html.ActionLink("Delete", "Delete", new { id = item.IdProduct }, new { @class = "delete-btn" })
         </td>
     </tr>
 
-    }
+}
 
 </table>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.delete-btn').click(function (e) {
+
+            if (confirm("Are you sure?")) {
+                
+                return true;
+            } else {
+                e.preventDefault();
+                return false;
+            }
+        })
+    })
+</script>

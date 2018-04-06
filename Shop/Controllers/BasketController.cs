@@ -16,7 +16,7 @@ namespace Shop.Controllers
         List<Discount> lstDiscounts = null;
         List<Product> lstProducts = null;
 
-
+        [HttpGet]
         public ActionResult Index()
         {
             if (Session["BasketItems"] != null)
@@ -27,7 +27,7 @@ namespace Shop.Controllers
             }
             else
             {
-                lstBasketItems = new List<BasketItem>();                
+                lstBasketItems = new List<BasketItem>();
                 try
                 {
                     lstDiscounts = db.Discounts.ToList();
@@ -94,11 +94,15 @@ namespace Shop.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult AddProduct(int id, int quantity)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProduct(int? id, int quantity)
         {
 
-            if (id != 0 || quantity > 1)
+            if (id != null && id != 0)
             {
+                quantity = (quantity < 1) ? 1 : quantity;
+
                 lstBasketItems = (List<BasketItem>)Session["BasketItems"];
                 BasketItem bi = lstBasketItems.Find(x => x.Product.IdProduct == id);
                 if (bi != null)
@@ -112,6 +116,10 @@ namespace Shop.Controllers
                     lstBasketItems.Add(b);
                     Session["BasketItems"] = lstBasketItems;
                 }
+            }
+            else
+            {
+                TempData["Message"] = "Could not retrieve the product, please try again";
             }
             return RedirectToAction("Index");
         }

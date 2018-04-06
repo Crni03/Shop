@@ -60,9 +60,6 @@ namespace Shop.Models
             return View(new Product());
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdProduct,Name,Price,Quantity,QuantityPrice")] Product product)
@@ -71,6 +68,7 @@ namespace Shop.Models
             {
                 db.Products.Add(product);
                 db.SaveChanges();
+                TempData["Message"] = "Product added";
                 return RedirectToAction("Index");
             }
 
@@ -79,25 +77,25 @@ namespace Shop.Models
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdProduct,Name,Price,Quantity,QuantityPrice")] Product product)
+        public ActionResult Edit([Bind(Include = "IdProduct,Name,Price,QuantityForPrice,QuantityPrice")] Product product)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Product edited";
                 return RedirectToAction("Index");
             }
             return View(product);
         }
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpGet, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
+            TempData["Message"] = "Product deleted";
             return RedirectToAction("Index");
         }
 

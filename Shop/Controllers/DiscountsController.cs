@@ -52,6 +52,7 @@ namespace Shop.Controllers
             {
                 db.Discounts.Add(discount);
                 db.SaveChanges();
+                TempData["Message"] = "Discount created";
                 return RedirectToAction("Index");
             }
 
@@ -84,6 +85,7 @@ namespace Shop.Controllers
             {
                 db.Entry(discount).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Discount edited";
                 return RedirectToAction("Index");
             }
             return View(discount);
@@ -112,6 +114,7 @@ namespace Shop.Controllers
             Discount discount = db.Discounts.Find(id);
             db.Discounts.Remove(discount);
             db.SaveChanges();
+            TempData["Message"] = "Discount deleted";
             return RedirectToAction("Index");
         }
 
