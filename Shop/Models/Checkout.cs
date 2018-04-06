@@ -44,7 +44,7 @@ namespace Shop.Models
         {
             decimal totalDiscount = 0;
 
-            if (UsedDiscount != null)
+            if (UsedDiscounts != null)
             {
                 decimal subtractValue = 0;
                 foreach (Discount item in UsedDiscounts)
