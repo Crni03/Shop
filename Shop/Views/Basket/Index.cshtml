@@ -4,105 +4,110 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Basket</h2>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Price)
-        </th>
+<div class="col-md-12">
+    <div class="col-md-6">
+        <h2>Basket</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Price)
+                </th>
 
-        <th>
-            Total price
-        </th>
-        <th></th>
-    </tr>
-    
-    @foreach (BasketItem item in ViewBag.BasketItems)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Price)
-            </td>
-            <td>
-                @item.GetTotalPrice()
-            </td>
-            <td>
-                @Html.ActionLink("+1", "GetById", new { id = item.Product.IdProduct, actionType = "AddOne" }) |
-                @Html.ActionLink("-1", "GetById", new { id = item.Product.IdProduct, actionType = "SubtractOne" }) |
-                @Html.ActionLink("Remove", "GetById", new { id = item.Product.IdProduct, actionType = "Remove" })
-            </td>
-        </tr>
-    }
-</table>
+                <th>
+                    Total price
+                </th>
+                <th></th>
+            </tr>
 
-<h2>Products</h2>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Price)
-        </th>
-        <th>
-            Price for many
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th></th>
-    </tr>
-
-
-    @foreach (Product item in ViewBag.ProductsList)
-    {
-        using (Html.BeginForm("AddProduct", "Basket", new { id = item.IdProduct }, FormMethod.Post))
-        {@Html.AntiForgeryToken()
-
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @if (item.QuantityForPrice > 0 && item.QuantityPrice > 0)
-                {
-                    @(item.QuantityForPrice + " for " + item.QuantityPrice);
-                }
-            </td>
-            <td>
-                <div class="col-md-5">
-                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Add to basket" class="btn btn-default" />
-                    </div>
-                </div>
-
-            </td>
-        </tr>
-    }
-
-}
-
-</table>
+            @foreach (BasketItem item in ViewBag.BasketItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Price)
+                    </td>
+                    <td>
+                        @item.GetTotalPrice()
+                    </td>
+                    <td>
+                        @Html.ActionLink("+1", "GetById", new { id = item.Product.IdProduct, actionType = "AddOne" }) |
+                        @Html.ActionLink("-1", "GetById", new { id = item.Product.IdProduct, actionType = "SubtractOne" }) |
+                        @Html.ActionLink("Remove", "GetById", new { id = item.Product.IdProduct, actionType = "Remove" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h2>Products</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Price)
+                </th>
+                <th>
+                    Price for many
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th></th>
+            </tr>
 
 
-@Html.ActionLink("Checkout", "Index", "Checkout")
+            @foreach (Product item in ViewBag.ProductsList)
+            {
+                using (Html.BeginForm("AddProduct", "Basket", new { id = item.IdProduct }, FormMethod.Post))
+                {@Html.AntiForgeryToken()
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @if (item.QuantityForPrice > 0 && item.QuantityPrice > 0)
+                        {
+                            @(item.QuantityForPrice + " for " + item.QuantityPrice);
+                        }
+                    </td>
+                    <td>
+                        <div>
+                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div>
+                                <input type="submit" value="Add to basket" class="btn btn-default" />
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        }
+
+        </table>
+    </div>
+</div>
+<a href="/Checkout/Index" class="btn btn-default">Checkout</a>
+
+

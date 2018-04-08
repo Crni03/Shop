@@ -10,7 +10,6 @@ namespace Shop.Controllers
 {
 
     [Authorize]
-
     public class CheckoutController : Controller
     {
 
