@@ -29,6 +29,11 @@ namespace Shop.Controllers
                 try
                 {
                     lstBasketItems = (List<BasketItem>)Session["BasketItems"];
+                    if (lstBasketItems.Count < 1)
+                    {
+                        TempData["Message"] = "Basket empty, add items";
+                        return RedirectToAction("Index", "Basket");
+                    }
                     discountsLeft = (List<Discount>)Session["DiscountsLeft"];
                     string currentUserId = User.Identity.GetUserId();
                     ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
@@ -39,7 +44,7 @@ namespace Shop.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["Message"] = "An error accurred, "  + ex.Message;
+                    TempData["Message"] = "An error accurred, " + ex.Message;
                     return RedirectToAction("Index", "Basket");
                 }
             }
@@ -48,10 +53,10 @@ namespace Shop.Controllers
                 TempData["Message"] = "Something went wrong, please try again!";
                 return RedirectToAction("Index", "Basket");
             }
-            if (Checkout.UsedDiscounts ==null)
+            if (Checkout.UsedDiscounts == null)
             {
                 Checkout.UsedDiscounts = new List<Discount>();
-            }            
+            }
             ViewBag.UsedDiscounts = Checkout.UsedDiscounts;
             return View(checkout);
         }
@@ -91,7 +96,7 @@ namespace Shop.Controllers
                     }
                     discountsLeft.Add(discount);
                     Checkout.UsedDiscounts.Remove(discount);
-                }                
+                }
                 Session["DiscountsLeft"] = discountsLeft;
 
             }
@@ -101,8 +106,8 @@ namespace Shop.Controllers
                 return RedirectToAction("Index");
             }
 
-           
+
             return RedirectToAction("Index");
-        }    
+        }
     }
 }

@@ -131,6 +131,7 @@ namespace Shop.Controllers
             Session["DiscountsLeft"] = null;
             Session["Products"] = null;
             TempData["Message"] = "Thank you for your purchase!";
+            Checkout.UsedDiscounts = new List<Discount>();
 
             return RedirectToAction("Index");
         }
